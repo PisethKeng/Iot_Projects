@@ -91,5 +91,7 @@ All data (slots, status, history) is served locally through a **built-in ESP32 w
    ```python
    TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN"
    TELEGRAM_CHAT_ID = "YOUR_CHAT_ID"
+## YOUTUBE DEMO
 
+[HERE IS LIVE DEMO](https://youtube.com/shorts/Fc_cvOBn1Po?feature=share)
 
