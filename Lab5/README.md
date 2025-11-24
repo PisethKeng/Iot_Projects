@@ -1,5 +1,4 @@
-<img width="1728" height="1117" alt="Screenshot 2025-11-20 at 7 27 51 PM" src="https://github.com/user-attachments/assets/bca5a88c-89e8-42e0-88ba-a9def3caf831" /># 🚀 Mobile App DC Motor Control with Grafana Dashboard
-
+# 🚀 Mobile App DC Motor Control with Grafana Dashboard
 
 
 This repository contains my completed implementation of Lab 5: Mobile App DC Motor Control with Grafana Dashboard.
@@ -14,7 +13,6 @@ I developed an ESP32-based MicroPython web server that exposes REST endpoints:
 /backward
 /stop
 /speed?value=<0–100>
-
 
 A custom mobile app built using MIT App Inventor sends these HTTP commands over Wi-Fi.
 Every command (direction + speed) is recorded into InfluxDB and displayed live in Grafana.
@@ -130,7 +128,9 @@ Events table with timestamp + direction + speed
 
 <img width="1728" height="1117" alt="Screenshot 2025-11-21 at 6 37 59 PM" src="https://github.com/user-attachments/assets/a3d75edd-f161-4335-b31a-96e6003a13a6" />
 
+
 <img width="1728" height="1117" alt="Screenshot 2025-11-21 at 6 34 02 PM" src="https://github.com/user-attachments/assets/0e965622-c5ac-4bcb-9244-c0f2d2a285d0" />
+
 
 <img width="1728" height="1117" alt="Screenshot 2025-11-21 at 6 27 46 PM" src="https://github.com/user-attachments/assets/cda2aee3-d7e6-42a1-b208-b5801b879b80" />
 
@@ -145,7 +145,6 @@ Error handling for invalid HTTP requests
 Smoother request parsing
 
 Logging fallback behaviour during network drops
-
 
 
 🎥 Demonstration Video
