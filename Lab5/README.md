@@ -1,11 +1,4 @@
-🚀 Mobile App DC Motor Control with Grafana Dashboard
-
-
-
-
-
-
-
+# 🚀 Mobile App DC Motor Control with Grafana Dashboard
 
 
 
@@ -13,7 +6,7 @@ This repository contains my completed implementation of Lab 5: Mobile App DC Mot
 I successfully built a full IoT actuation system where a mobile app controls a DC motor through an ESP32 web server, with all actions logged into InfluxDB and visualized in Grafana.
 
 
-📌 Project Overview
+## 📌 Project Overview
 
 I developed an ESP32-based MicroPython web server that exposes REST endpoints:
 
@@ -27,7 +20,7 @@ A custom mobile app built using MIT App Inventor sends these HTTP commands over 
 Every command (direction + speed) is recorded into InfluxDB and displayed live in Grafana.
 
 
-🎯 Learning Outcomes Achieved
+## 🎯 Learning Outcomes Achieved
 
 I completed all required learning outcomes:
 
@@ -42,7 +35,7 @@ Logged all actuator data into InfluxDB and visualized it on Grafana.
 Evaluated delay, responsiveness, and system reliability.
 
 
-🛠️ Hardware Setup
+## 🛠️ Hardware Setup
 
 ESP32 Dev Board
 
@@ -59,7 +52,7 @@ InfluxDB server
 Grafana Dashboard
 
 
-🔌 Wiring Diagram
+## 🔌 Wiring Diagram
 ESP32 Pin	L298N Pin	Purpose
 25	ENA	PWM (Speed)
 26	IN1	Direction
@@ -67,9 +60,7 @@ ESP32 Pin	L298N Pin	Purpose
 GND	GND	Common Ground
 		
 
-📷 Insert your wiring picture here
-
-📱 Mobile App (MIT App Inventor)
+## 📱 Mobile App (MIT App Inventor)
 
 The mobile app UI includes:
 
@@ -87,10 +78,7 @@ http://<ESP_IP>/stop
 http://<ESP_IP>/speed?value=60
 
 
-📱 Insert your app screenshots here
-
-
-🧠 ESP32 MicroPython (Web Server + InfluxDB Logging)
+## 🧠 ESP32 MicroPython (Web Server + InfluxDB Logging)
 
 I implemented all required endpoints and added HTTP POST logging to InfluxDB.
 Each motor command sends a JSON log:
@@ -102,10 +90,10 @@ Each motor command sends a JSON log:
 }
 
 
-🖥️ Insert serial log screenshot here
+## 🖥️ serial log screenshot here
 
 
-🗄️ InfluxDB Data Logging
+## 🗄️ InfluxDB Data Logging
 
 InfluxDB successfully stores:
 
@@ -115,10 +103,10 @@ speed value
 
 timestamp
 
-🗄️ Insert screenshot of InfluxDB table here
+## 🗄️  screenshot of InfluxDB table here
 
 
-📊 Grafana Dashboard
+## 📊 Grafana Dashboard
 
 My Grafana dashboard includes:
 
@@ -128,10 +116,10 @@ Last command display
 
 Events table with timestamp + direction + speed
 
-📊 Insert Grafana dashboard screenshot here
+## 📊  Grafana dashboard screenshot here
 
 
-🛡️ Reliability Improvements Implemented
+## 🛡️ Reliability Improvements Implemented
 
 I added:
 
