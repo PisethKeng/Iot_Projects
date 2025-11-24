@@ -1,4 +1,4 @@
-# 🚀 Mobile App DC Motor Control with Grafana Dashboard
+<img width="1728" height="1117" alt="Screenshot 2025-11-20 at 7 27 51 PM" src="https://github.com/user-attachments/assets/bca5a88c-89e8-42e0-88ba-a9def3caf831" /># 🚀 Mobile App DC Motor Control with Grafana Dashboard
 
 
 
@@ -78,6 +78,9 @@ http://<ESP_IP>/stop
 http://<ESP_IP>/speed?value=60
 
 
+<img width="869" height="528" alt="Screenshot 2025-11-22 at 2 11 15 PM" src="https://github.com/user-attachments/assets/2bf666d6-1810-423a-8582-1fc35d5cf809" />
+
+
 ## 🧠 ESP32 MicroPython (Web Server + InfluxDB Logging)
 
 I implemented all required endpoints and added HTTP POST logging to InfluxDB.
@@ -93,6 +96,9 @@ Each motor command sends a JSON log:
 ## 🖥️ serial log screenshot here
 
 
+<img width="1728" height="1117" alt="Screenshot 2025-11-22 at 2 08 32 PM" src="https://github.com/user-attachments/assets/a6dcb330-dd73-4cd3-8cbc-c9a70927b70e" />
+
+
 ## 🗄️ InfluxDB Data Logging
 
 InfluxDB successfully stores:
@@ -104,6 +110,9 @@ speed value
 timestamp
 
 ## 🗄️  screenshot of InfluxDB table here
+
+<img width="869" height="528" alt="Screenshot 2025-11-22 at 2 10 32 PM" src="https://github.com/user-attachments/assets/43581327-84e0-4ca0-a123-e5b91b197293" />
+
 
 
 ## 📊 Grafana Dashboard
@@ -118,6 +127,12 @@ Events table with timestamp + direction + speed
 
 ## 📊  Grafana dashboard screenshot here
 
+
+<img width="1728" height="1117" alt="Screenshot 2025-11-21 at 6 37 59 PM" src="https://github.com/user-attachments/assets/a3d75edd-f161-4335-b31a-96e6003a13a6" />
+
+<img width="1728" height="1117" alt="Screenshot 2025-11-21 at 6 34 02 PM" src="https://github.com/user-attachments/assets/0e965622-c5ac-4bcb-9244-c0f2d2a285d0" />
+
+<img width="1728" height="1117" alt="Screenshot 2025-11-21 at 6 27 46 PM" src="https://github.com/user-attachments/assets/cda2aee3-d7e6-42a1-b208-b5801b879b80" />
 
 ## 🛡️ Reliability Improvements Implemented
 
