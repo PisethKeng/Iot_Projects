@@ -1,101 +1,169 @@
-## ESP32 Motor Control & InfluxDB Telemetry Project
-
-This project implements an ESP32-based motor control system with real-time telemetry logging to an InfluxDB database. It includes:
-
-Wi-Fi connection to local network
-
-Motor PWM control
-
-HTTP POST requests to InfluxDB
-
-A lightweight onboard web server (optional)
-
-Logging of motor direction, speed, timestamps, and system state
-
-This repository also includes screenshots and documentation evidence for all required tasks.
-
-🧩 Project Overview
-
-The ESP32 is programmed using MicroPython and controls a DC motor using PWM.
-Telemetry (RPM approximation, control commands, run logs) is sent to InfluxDB via HTTP.
-
-An external dashboard such as Grafana can query the same InfluxDB database to visualize real-time motor data.
-
-# 🚀 Features
-
-✔️ ESP32 Wi-Fi auto-connection
-
-✔️ Secure credentials stored in constants
-
-✔️ Motor PWM speed control
-
-✔️ Forward / Backward direction control
-
-✔️ Pushes data to InfluxDB using the /write API
-
-✔️ Lightweight web server for interactive browser-based control
-
-✔️ Timestamps for accurate measurement
-
-✔️ Debug logging
-
-# 📁 Repository Structure
-📂 esp32-motor-influxdb
-├── main.py              # Motor control + Wi-Fi + InfluxDB logging
-├── README.md            # Project documentation
-├── /evidence/           # Screenshots for each required task (insert later)
-│   ├── wifi_connection.png
-│   ├── influxdb_write.png
-│   ├── grafana_dashboard.png
-│   └── motor_running.png
-└── requirements.txt     # (If needed)
-
-# 🔧 Hardware Requirements
-
-ESP32 Dev Module
-
-L298N or compatible motor driver
-
-DC motor
-
-External power supply (recommended)
-
-Jumper wires
-
-Optional: Breadboard
-
-# 🧪 Software Requirements
-
-MicroPython (ESP32 firmware)
-
-ampy or mpremote for file uploads
-
-InfluxDB (local or cloud)
-
-Grafana (optional, for visualization)
-
-# 📡 Wi-Fi Configuration
-
-Modify the following lines in main.py when switching networks:
-
-WIFI_SSID = "YourWiFiName"
-WIFI_PASS = "YourPassword"
-
-# 📊 InfluxDB Setup
-
-Install InfluxDB
-
-Create a database:
-
-CREATE DATABASE motor_logs
+🚀 Mobile App DC Motor Control with Grafana Dashboard
 
 
-Replace the default URL in main.py:
-
-INFLUX_URL = "http://<your-ip>:8086/write?db=motor_logs&precision=s"
 
 
-Example (home network):
 
-http://10.30.0.157:8086/write?db=motor_logs&precision=s
 
+
+
+
+
+This repository contains my completed implementation of Lab 5: Mobile App DC Motor Control with Grafana Dashboard.
+I successfully built a full IoT actuation system where a mobile app controls a DC motor through an ESP32 web server, with all actions logged into InfluxDB and visualized in Grafana.
+
+
+📌 Project Overview
+
+I developed an ESP32-based MicroPython web server that exposes REST endpoints:
+
+/forward
+/backward
+/stop
+/speed?value=<0–100>
+
+
+A custom mobile app built using MIT App Inventor sends these HTTP commands over Wi-Fi.
+Every command (direction + speed) is recorded into InfluxDB and displayed live in Grafana.
+
+
+🎯 Learning Outcomes Achieved
+
+I completed all required learning outcomes:
+
+Designed an IoT actuation system combining ESP32, L298N, mobile UI, and Grafana.
+
+Created a RESTful interface for motor control using MicroPython.
+
+Built and deployed a mobile control UI using MIT App Inventor.
+
+Logged all actuator data into InfluxDB and visualized it on Grafana.
+
+Evaluated delay, responsiveness, and system reliability.
+
+
+🛠️ Hardware Setup
+
+ESP32 Dev Board
+
+L298N Motor Driver
+
+DC Motor
+
+Jumper wires + breadboard
+
+Android phone (App Inventor app)
+
+InfluxDB server
+
+Grafana Dashboard
+
+
+🔌 Wiring Diagram
+ESP32 Pin	L298N Pin	Purpose
+25	ENA	PWM (Speed)
+26	IN1	Direction
+27	IN2	Direction
+GND	GND	Common Ground
+		
+
+📷 Insert your wiring picture here
+
+📱 Mobile App (MIT App Inventor)
+
+The mobile app UI includes:
+
+Forward, Backward, Stop buttons
+
+Speed slider (0–100%)
+
+Status label showing current command
+
+It sends commands such as:
+
+http://<ESP_IP>/forward?speed=80
+http://<ESP_IP>/backward?speed=50
+http://<ESP_IP>/stop
+http://<ESP_IP>/speed?value=60
+
+
+📱 Insert your app screenshots here
+
+
+🧠 ESP32 MicroPython (Web Server + InfluxDB Logging)
+
+I implemented all required endpoints and added HTTP POST logging to InfluxDB.
+Each motor command sends a JSON log:
+
+{
+  "timestamp": "<ISO_time>",
+  "action": "forward",
+  "speed": 70
+}
+
+
+🖥️ Insert serial log screenshot here
+
+
+🗄️ InfluxDB Data Logging
+
+InfluxDB successfully stores:
+
+action
+
+speed value
+
+timestamp
+
+🗄️ Insert screenshot of InfluxDB table here
+
+
+📊 Grafana Dashboard
+
+My Grafana dashboard includes:
+
+Speed vs Time graph
+
+Last command display
+
+Events table with timestamp + direction + speed
+
+📊 Insert Grafana dashboard screenshot here
+
+
+🛡️ Reliability Improvements Implemented
+
+I added:
+
+Wi-Fi auto-reconnect logic
+
+Error handling for invalid HTTP requests
+
+Smoother request parsing
+
+Logging fallback behaviour during network drops
+
+
+
+🎥 Demonstration Video
+
+A short demo video shows:
+
+Mobile app controlling the motor
+
+ESP32 responding instantly
+
+Grafana updating in real time
+
+
+📝 Reflection
+
+In my testing:
+
+Wi-Fi latency was generally low, with occasional small delays under weak signal conditions.
+
+InfluxDB logging was reliable; occasional spikes came from network reconnection events.
+
+Grafana’s real-time updates accurately reflected the live state of the motor.
+
+Overall responsiveness and accuracy were good, with potential future improvements in debouncing and data smoothing.
