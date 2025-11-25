@@ -158,6 +158,9 @@ ESP32 responding instantly
 Grafana updating in real time
 
 
+[▶️ Watch the Demo Video](https://www.youtube.com/watch?v=lKN_9uY9JA4)
+
+
 📝 Reflection
 
 In my testing:
