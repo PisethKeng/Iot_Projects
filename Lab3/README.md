@@ -45,6 +45,12 @@ This project demonstrates how to collect real-time temperature, pressure, and al
    - Port: `1883`  
    - Topic: `v1/devices/me/telemetry`
 
+## Sending Data To thingsboard + Panel 
+
+
+<img width="1088" height="659" alt="Screenshot 2025-12-08 at 9 10 36 PM" src="https://github.com/user-attachments/assets/1d75db0a-c799-40ff-9d91-f384210e4119" />
+
+
 ---
 
 ## 💻 Software Setup
