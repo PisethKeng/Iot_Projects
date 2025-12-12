@@ -66,157 +66,322 @@ def read_temperature():
         return sensor.temperature()
     except OSError:
         return None
-
-# -------- Web Page ----------
+ # -------- Web Page ----------
 def web_page():
-    # --- START OF MODIFIED CSS ---
     return """<!DOCTYPE html>
 <html>
 <head>
-    <title>ESP32 Sensor Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      body {
-        font-family: 'Montserrat', sans-serif; /* Changed font */
-        background: linear-gradient(to right, #134e5e 0%, #71b280 100%);
-        color: #e0e0e0; /* Lighter text for dark background */
-        text-align: center;
-        margin: 0;
-        padding: 0;
-      }
-      h2 {
-        background-color: rgba(255, 252, 243, 0.15); /* Slightly transparent white */
-        padding: 20px; /* Increased padding */
-        margin: 0;
-        font-size: 2.5em; /* Larger heading */
-        color: #ffffff; /* White heading text */
-        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3); /* Subtle shadow */
-      }
-      .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 25px auto; /* Adjusted margin */
-        max-width: 900px; /* Wider container */
-      }
-      .card {
-        background-color: rgba(255, 255, 255, 0.1); /* Lighter transparent white for cards */
-        border-radius: 15px; /* More rounded corners */
-        padding: 25px; /* Increased padding */
-        margin: 12px; /* Adjusted margin */
-        min-width: 160px; /* Slightly larger min-width */
-        flex: 1 1 200px; /* Flex basis adjusted */
-        box-shadow: 0 6px 15px rgba(0,0,0,0.4); /* Stronger shadow for depth */
-        transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transitions */
-        backdrop-filter: blur(5px); /* Frosted glass effect */
-        border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-      }
-      .card:hover {
-          transform: translateY(-8px) scale(1.03); /* Lift and scale on hover */
-          background-color: rgba(255, 255, 255, 0.15); /* Slightly more opaque on hover */
-      }
-      .card h3 {
-          margin: 10px 0;
-          color: #ffffff; /* White heading for cards */
-          font-size: 1.5em;
-      }
-      .card p {
-          font-size: 1.8em; /* Larger sensor values */
-          font-weight: bold;
-          color: #ffee00; /* Bright yellow for sensor readings */
-          margin: 15px 0;
-      }
-      button {
-        padding: 12px 25px;
-        margin: 6px; /* Adjusted margin */
-        border: none;
-        border-radius: 25px; /* Pill-shaped buttons */
-        cursor: pointer;
-        font-size: 1.05em; /* Slightly larger font */
-        color: #ffffff;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Button shadow */
-      }
-      button:hover {
-          opacity: 0.95; /* Slightly less opaque */
-          transform: translateY(-2px); /* Lift button on hover */
-      }
-      .led-on { background-color: #28a745; } /* Green */
-      .led-off { background-color: #dc3545; } /* Red */
-      .lcd { background-color: #007bff; } /* Blue */
-      .sensor-btn { background-color: #ffc107; color: #333; } /* Yellow-orange, darker text */
-      .both-sensors { background-color: #6f42c1; } /* Purple */
-      input[type=text] {
-        padding: 12px; /* Increased padding */
-        width: 70%; /* Wider input field */
-        border-radius: 10px; /* Rounded corners */
-        border: 1px solid #cccccc; /* Subtle border */
-        margin: 10px 0;
-        font-size: 1.0em;
-        background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-        color: #333;
-      }
-      input[type=text]::placeholder {
-          color: #666;
-      }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"> <script>
-      async function fetchData() {
-        let r = await fetch('/data');
-        let d = await r.json();
-        document.getElementById("distance").innerText = d.distance + " cm";
-        document.getElementById("temperature").innerText = d.temperature + " C";
-        document.getElementById("led").innerText = d.ledState;
-        document.getElementById("led").className = d.ledState === "ON" ? "led-on" : "led-off";
-        document.getElementById("lcd").innerText = d.lcdStatus;
-      }
-      setInterval(fetchData, 2000);
+  <title>ESP32 Sensor Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      async function sendLCDText() {
-        let msg = document.getElementById("lcdInput").value;
-        if (msg.trim() !== "") {
-          await fetch("/lcd_text?msg=" + encodeURIComponent(msg));
-          document.getElementById("lcdInput").value = "";
-          alert("Text sent to LCD!");
-        }
+  <style>
+    :root{
+      --glass: rgba(255,255,255,.12);
+      --glass2: rgba(255,255,255,.18);
+      --stroke: rgba(255,255,255,.25);
+      --txt: #f2f5f4;
+      --muted: #cfd8d3;
+      --warn: #ffd84d;
+      --shadow: 0 16px 40px rgba(0,0,0,.45);
+      --shadow2: 0 10px 25px rgba(0,0,0,.35);
+    }
+
+    body{
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #134e5e 0%, #71b280 100%);
+      color: var(--txt);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Top bar */
+    header{
+      padding: 18px 16px;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--stroke);
+      box-shadow: 0 4px 22px rgba(0,0,0,.35);
+    }
+    header h2{
+      margin: 0;
+      text-align: left;
+      font-size: 1.9em;
+      letter-spacing: .5px;
+      font-weight: 700;
+    }
+    header p{
+      margin: 6px 0 0;
+      text-align: left;
+      color: var(--muted);
+      font-size: .95em;
+    }
+
+    /* Page layout */
+    .wrap{
+      max-width: 1100px;
+      margin: 26px auto;
+      padding: 0 14px 26px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+    }
+
+    /* Dashboard grid */
+    .dashboard{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      align-content: start;
+    }
+
+    /* Cards */
+    .card{
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      padding: 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow2);
+      transition: transform .25s ease, background-color .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{
+      transform: translateY(-6px);
+      background: var(--glass2);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 1.2em;
+      font-weight: 700;
+    }
+
+    .sub{
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: .92em;
+      line-height: 1.35;
+    }
+
+    /* Readout row */
+    .readout{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      margin: 10px 0 14px;
+    }
+    .value{
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--warn);
+    }
+    .tag{
+      font-size: .8em;
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      white-space: nowrap;
+    }
+
+    /* Buttons */
+    .actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button{
+      border: none;
+      cursor: pointer;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .98em;
+      transition: transform .2s ease, filter .2s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    button:hover{
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .led-on{ background: linear-gradient(to right, #1d976c, #93f9b9); color: #083b26; }
+    .led-off{ background: linear-gradient(to right, #cb2d3e, #ef473a); color: #fff; }
+    .lcd{ background: linear-gradient(to right, #396afc, #2948ff); color: #fff; }
+    .sensor-btn{ background: linear-gradient(to right, #f7971e, #ffd200); color: #2b2b2b; }
+    .both-sensors{ background: linear-gradient(to right, #0f2027, #2c5364, #1c7c54); color: #fff; }
+
+    /* Side panel */
+    .side{
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    input[type=text]{
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,.95);
+      color: #333;
+      font-size: 1em;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,.18);
+    }
+    input[type=text]::placeholder{ color: #777; }
+
+    /* Make LED status look like a pill */
+    #led.led-on, #led.led-off{
+      color: #fff;
+      font-size: .95em;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      min-width: 64px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+
+    footer{
+      max-width: 1100px;
+      margin: 0 auto 26px;
+      padding: 0 14px;
+      color: rgba(255,255,255,.75);
+      font-size: .9em;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .wrap{ grid-template-columns: 1fr; }
+      header h2, header p{ text-align: center; }
+      .dashboard{ grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <script>
+    async function fetchData() {
+      let r = await fetch('/data');
+      let d = await r.json();
+      document.getElementById("distance").innerText = d.distance + " cm";
+      document.getElementById("temperature").innerText = d.temperature + " C";
+      document.getElementById("led").innerText = d.ledState;
+      document.getElementById("led").className = d.ledState === "ON" ? "led-on" : "led-off";
+      document.getElementById("lcd").innerText = d.lcdStatus;
+    }
+    setInterval(fetchData, 2000);
+
+    async function sendLCDText() {
+      let msg = document.getElementById("lcdInput").value;
+      if (msg.trim() !== "") {
+        await fetch("/lcd_text?msg=" + encodeURIComponent(msg));
+        document.getElementById("lcdInput").value = "";
+        alert("Text sent to LCD!");
       }
-    </script>
+    }
+  </script>
 </head>
+
 <body onload="fetchData()">
-    <h2>ESP32 Sensor Dashboard</h2>
-    <div class="container">
+  <header>
+    <h2>ESP32 Forest Console</h2>
+    <p>Live sensor snapshots • Control center • LCD messaging</p>
+  </header>
+
+  <main class="wrap">
+    <!-- LEFT: Dashboard grid -->
+    <section class="dashboard">
       <div class="card">
-        <h3>Distance</h3>
-        <p id="distance">--</p>
-        <button class="sensor-btn" onclick="fetch('/show_distance')">Show Distance</button>
+        <h3>Ultrasonic Range</h3>
+        <p class="sub">Distance reading from the sensor.</p>
+        <div class="readout">
+          <span class="value" id="distance">--</span>
+          <span class="tag">cm</span>
+        </div>
+        <div class="actions">
+          <button class="sensor-btn" onclick="fetch('/show_distance')">Show on LCD</button>
+        </div>
       </div>
+
       <div class="card">
         <h3>Temperature</h3>
-        <p id="temperature">--</p>
-        <button class="sensor-btn" onclick="fetch('/show_temperature')">Show Temperature</button>
+        <p class="sub">Current temperature output.</p>
+        <div class="readout">
+          <span class="value" id="temperature">--</span>
+          <span class="tag">°C</span>
+        </div>
+        <div class="actions">
+          <button class="sensor-btn" onclick="fetch('/show_temperature')">Show on LCD</button>
+        </div>
       </div>
-      <div class="card">
-        <h3>LED</h3>
-        <p id="led">--</p>
-        <button class="led-on" onclick="fetch('/led_on')">LED ON</button>
-        <button class="led-off" onclick="fetch('/led_off')">LED OFF</button>
-      </div>
-      <div class="card">
-        <h3>LCD Controls</h3>
-        <p id="lcd">--</p>
-        <button class="both-sensors" onclick="fetch('/show_both_sensors')">Show Both</button>
-        <button class="lcd" onclick="fetch('/hide_lcd')">Hide LCD</button>
-      </div>
-    </div>
 
-    <div class="card" style="max-width:400px; margin:auto;">
-      <h3>Custom LCD Message</h3>
-      <input type="text" id="lcdInput" placeholder="Enter text for LCD">
-      <button class="lcd" onclick="sendLCDText()">Send</button>
-    </div>
+      <div class="card">
+        <h3>LED Control</h3>
+        <p class="sub">Toggle the onboard LED state.</p>
+        <div class="readout" style="justify-content:center;">
+          <span id="led">--</span>
+        </div>
+        <div class="actions">
+          <button class="led-on" onclick="fetch('/led_on')">Turn ON</button>
+          <button class="led-off" onclick="fetch('/led_off')">Turn OFF</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>LCD Panel</h3>
+        <p class="sub">Display sensor data or hide the screen.</p>
+        <div class="readout">
+          <span class="value" id="lcd">--</span>
+          <span class="tag">status</span>
+        </div>
+        <div class="actions">
+          <button class="both-sensors" onclick="fetch('/show_both_sensors')">Show Both</button>
+          <button class="lcd" onclick="fetch('/hide_lcd')">Hide LCD</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Side panel -->
+    <aside class="side">
+      <div class="card">
+        <h3>Custom LCD Message</h3>
+        <p class="sub">Send your own text to the LCD display.</p>
+        <input type="text" id="lcdInput" placeholder="Type message...">
+        <div style="height:12px;"></div>
+        <div class="actions">
+          <button class="lcd" onclick="sendLCDText()">Send Message</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Quick Tips</h3>
+        <p class="sub">
+          • Readings refresh every 2 seconds.<br>
+          • “Show on LCD” pushes the value to the screen.<br>
+          • Use short messages for best LCD fit.
+        </p>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    ESP32 Dashboard • Forest UI Theme
+  </footer>
 </body>
-</html>"""
+</html>"""    
+      
     # --- END OF MODIFIED CSS ---
 
 # -------- Web Server ----------
