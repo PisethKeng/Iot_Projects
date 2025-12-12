@@ -1,3 +1,7 @@
+# Group 9 IoT (MTH 8:30 - 10:00)
+
+a repository that showcases group 9 labworks and project. 
+
 
 # 🚗 Smart Parking System (ESP32 + MicroPython)
 
